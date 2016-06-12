@@ -20,37 +20,19 @@ $unsub = array();
 $bounced = array();
 $valid = array();
 
-$all = file('all.txt');  //  Populate them and display their contents to make sure we're getting what we want.
-print_r($all);
-echo '<br>';
-
-$unsub = file('unsub.txt');
-print_r($unsub);
-echo '<br>';
-
-$bounced = file('bounced.txt');
-print_r($bounced);
-echo '<br>';
+$all = file('all.txt', FILE_IGNORE_NEW_LINES);  //  Populate them, ensuring that newlines in the files don't cause values to be different if an address happens to be on the last line of the file.
+$unsub = file('unsub.txt', FILE_IGNORE_NEW_LINES);
+$bounced = file('bounced.txt', FILE_IGNORE_NEW_LINES);
 
 
 
-
-/*  This should remove any values in $unsub and $bounced from 
- *  $all, producing a list of valid email addresses. It's not 
- *  working. As you can see from it's output, it only removes 
- *  values from $all if the values' indices are also equal in 
- *  spite of the fact that the function array_diff() is not 
- *  supposed to care about keys or indices. See also: http://
- *  stackoverflow.com/questions/7348280/array-diff-not-
- *  working-as-expected-what-could-be-the-reason
-*/
-
-$valid = array_diff($all, $unsub, $bounced);  
+$valid = array_diff($all, $unsub, $bounced);  // Pare down the array to only the addresses we want. This is slow.
 
 foreach ($valid as $value) {
 	print($value . '<br>');
 }
 
-echo (PHP_VERSION);  //  This behavior has also been tested and is the same in version 5.6.19
+// For a faster way of doing this, see: http://stackoverflow.com/questions/2479963/how-does-array-diff-work
+
 
 ?>
