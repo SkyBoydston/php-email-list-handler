@@ -15,12 +15,12 @@
 
 
 
-$all = array();
+$all = array();  //  Initialize the arrays we'll need
 $unsub = array();
 $bounced = array();
 $valid = array();
 
-$all = file('all.txt');
+$all = file('all.txt');  //  Populate them and display their contents to make sure we're getting what we want.
 print_r($all);
 echo '<br>';
 
@@ -32,41 +32,25 @@ $bounced = file('bounced.txt');
 print_r($bounced);
 echo '<br>';
 
-// $unsub = ['two@two.com', 'four@four.org'];
-// print_r($unsub);
-
-function leo_array_diff($a, $b) {
-    $map = array();
-    foreach($a as $val) $map[$val] = 1;
-    foreach($b as $val) unset($map[$val]);
-    return array_keys($map);
-}
-
-// function real_array_diff($a, $b) {
-// 	for ($i = 0; $i < count($array2); $i++) { 
-// 	    for ($j = 0; $j < count($array1); $j++) {
-// 	        if(!in_array($array1[$j],$array2)){ 
-// 	            $resArr[] = $array1[$j]; 
-// 	        } 
-// 	    } 
-// 	}
-// 	foreach ($b as $b_value) {
-// 		if(in_array($b_value, $a)) {
-
-// 		}
-// 	}
-// }
 
 
 
-$valid = array_diff($all, $unsub, $bounced);  //  Not working. See also: http://stackoverflow.com/questions/7348280/array-diff-not-working-as-expected-what-could-be-the-reason
+/*  This should remove any values in $unsub and $bounced from 
+ *  $all, producing a list of valid email addresses. It's not 
+ *  working. As you can see from it's output, it only removes 
+ *  values from $all if the values' indices are also equal in 
+ *  spite of the fact that the function array_diff() is not 
+ *  supposed to care about keys or indices. See also: http://
+ *  stackoverflow.com/questions/7348280/array-diff-not-
+ *  working-as-expected-what-could-be-the-reason
+*/
+
+$valid = array_diff($all, $unsub, $bounced);  
 
 foreach ($valid as $value) {
 	print($value . '<br>');
 }
 
-echo (PHP_VERSION);
-
-// Faster solution for this: http://stackoverflow.com/questions/2479963/how-does-array-diff-work/6700430#6700430
+echo (PHP_VERSION);  //  This behavior has also been tested and is the same in version 5.6.19
 
 ?>
